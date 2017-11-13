@@ -59,6 +59,7 @@ static unsigned short const CCNEscapeKey = 53;
 
 @interface CCNPreferencesWindowController() <NSToolbarDelegate, NSWindowDelegate>
 
+@property (assign) BOOL setupComplete;
 @property (strong) NSToolbar *toolbar;
 @property (strong) NSSegmentedControl *segmentedControl;
 @property (strong) NSMutableArray *toolbarDefaultItemIdentifiers;
@@ -81,7 +82,16 @@ static unsigned short const CCNEscapeKey = 53;
     return self;
 }
 
+- (void)awakeFromNib {
+    [self setupDefaults];
+}
+
 - (void)setupDefaults {
+    if (self.setupComplete) {
+        return;
+    }
+    self.setupComplete = YES;
+    
     self.viewControllers = [[NSMutableOrderedSet alloc] init];
     self.activeViewController = nil;
     self.window = [[CCNPreferencesWindow alloc] init];
